@@ -1,7 +1,9 @@
 package com.restapi.dataloader;
 
 import com.restapi.model.AppUser;
+import com.restapi.model.OrderStatus;
 import com.restapi.model.Role;
+import com.restapi.repository.OrderStatusRepository;
 import com.restapi.repository.RoleRepository;
 import com.restapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private OrderStatusRepository orderStatusRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(final ContextRefreshedEvent event) {
@@ -41,7 +46,22 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createUserIfNotFound("user", "user", userRole);
         createUserIfNotFound("admin", "admin", adminRole);
 
+        createStatus("Pending");
+        createStatus("Confirmed");
+        createStatus("Out for Delivery");
+        createStatus("Delivered");
+
         alreadySetup = true;
+    }
+
+    @Transactional
+    private void createStatus(String status) {
+
+        OrderStatus orderStatus = orderStatusRepository.findByStatus(status);
+        if (orderStatus == null) {
+            orderStatus = new OrderStatus(status);
+            orderStatusRepository.save(orderStatus);
+        }
     }
 
     @Transactional

@@ -40,7 +40,7 @@ public class Product {
     @Column(name = "photo", columnDefinition = "BLOB")
     private byte[] photo;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;

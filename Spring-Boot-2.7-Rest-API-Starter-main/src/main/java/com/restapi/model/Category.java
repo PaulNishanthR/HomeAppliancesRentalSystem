@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Category {
     @Column(nullable = false, length = 200)
     private String title;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> productList = new ArrayList<>();
 

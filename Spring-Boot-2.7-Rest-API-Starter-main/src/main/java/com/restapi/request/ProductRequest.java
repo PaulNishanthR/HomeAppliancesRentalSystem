@@ -17,12 +17,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class ProductRequest {
 
-    @NotNull
-    @Min(value = 1, message = "Id must be greater than or equal to 1")
     private Long id;
 
-    @NotNull
-    @Min(value = 1, message = "categoryId must be greater than or equal to 1")
     private Long categoryId;
 
     @NotEmpty

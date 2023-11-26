@@ -14,8 +14,7 @@ import javax.validation.constraints.Size;
 @ToString
 public class CategoryRequest {
 
-    @NotNull
-    @Min(value = 1, message = "Id must be greater than or equal to 1")
+
     private Long id;
 
     @NotEmpty
