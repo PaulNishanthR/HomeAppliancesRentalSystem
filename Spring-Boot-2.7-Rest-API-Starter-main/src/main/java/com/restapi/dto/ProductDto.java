@@ -17,9 +17,9 @@ public class ProductDto {
 
         Product product = new Product();
         if (productRequest.getId() != null) {
-            product.setId(productRequest.getId());
+            product.setId(Long.valueOf(productRequest.getId()));
         }
-        product.setPrice(productRequest.getPrice());
+        product.setPrice(Double.valueOf(productRequest.getPrice()));
         product.setDescription(productRequest.getDescription());
         product.setTitle(productRequest.getTitle());
         product.setPhoto(productRequest.getPhoto());

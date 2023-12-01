@@ -35,12 +35,10 @@ public class Product {
     @Transient
     private Integer count;
 
-    @Transient
-    @Lob
-    @Column(name = "photo", columnDefinition = "BLOB")
-    private byte[] photo;
+    @Column
+    private String photo;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;

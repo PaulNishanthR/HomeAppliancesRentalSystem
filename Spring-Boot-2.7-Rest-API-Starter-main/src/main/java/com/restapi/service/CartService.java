@@ -46,7 +46,7 @@ public class CartService {
             boolean isPresent = false;
             for (Cart cart : cartOptional.get()) {
                 if (cart.getProduct().getId().equals(cartRequest.getProductId())) {
-                    cart.setCount(cartRequest.getCount());
+                    cart.setCount(cart.getCount()+1);
                     cartRepository.save(cart);
                     isPresent = true;
                     break;
@@ -71,9 +71,9 @@ public class CartService {
 
     @Transactional
     public List<Cart> deleteProductFromCart(Long userId, Long productCartId) {
-        Optional<Cart> cartOptional = cartRepository.findById(productCartId);
+        Optional<Cart> cartOptional = cartRepository.findByProductId(productCartId);
         if (cartOptional.isPresent() && cartOptional.get().getAppUser().getId().equals(userId)) {
-            cartRepository.deleteById(productCartId);
+            cartRepository.deleteById(cartOptional.get().getId());
         }
 
         return findUserCart(userId);

@@ -7,11 +7,17 @@ import com.restapi.model.Product;
 import com.restapi.repository.CategoryRepository;
 import com.restapi.repository.ProductRepository;
 import com.restapi.request.ProductRequest;
+import com.restapi.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -24,16 +30,19 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private StorageService storageService;
+
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
     @Transactional
-    public List<Product> createProduct(ProductRequest productRequest) {
-        Product product = productDto.mapToProduct(productRequest);
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
+    public List<Product> createProduct(Product product, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
-                        "CategoryId", productRequest.getCategoryId()));
+                        "CategoryId", categoryId));
+        product.setPhoto(product.getPhoto());
         product.setCategory(category);
         productRepository.save(product);
         return findAll();
@@ -42,16 +51,30 @@ public class ProductService {
     @Transactional
     public List<Product> updateProduct(ProductRequest productRequest) {
         Product product = productDto.mapToProduct(productRequest);
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("CategoryId",
-                        "CategoryId", productRequest.getCategoryId()));
+        product.setPhoto(product.getPhoto());
+        Category category = categoryRepository.findById(Long.valueOf(productRequest.getCategoryId())).orElseThrow();
         product.setCategory(category);
         productRepository.save(product);
         return findAll();
     }
 
+
     public List<Product> deleteById(Integer id) {
         productRepository.deleteById(Long.valueOf(id));
         return findAll();
+    }
+
+    public Product getProduct(String name) {
+        Optional<Product> productOptional = productRepository.findByTitle(name);
+        return productOptional.get();
+    }
+
+    public File getFile(Long id) throws IOException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("id", "id", id));
+
+        Resource resource = storageService.loadFileAsResource(product.getPhoto());
+
+        return resource.getFile();
     }
 }

@@ -17,9 +17,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class ProductRequest {
 
-    private Long id;
+    private String id;
 
-    private Long categoryId;
+    private String categoryId;
 
     @NotEmpty
     @Size(min = 2, message = "title at least have 2 characters")
@@ -31,7 +31,7 @@ public class ProductRequest {
 
     @NotNull
     @Min(value = 3, message = "price must be greater than or equal to 3 digits")
-    private Double price;
+    private String price;
 
-    private byte[] photo;
+    private String photo;
 }

@@ -30,7 +30,13 @@ public class AuthController {
         AuthResponse loggedInUser = userService.login(loginRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(loggedInUser);
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//        try {
+//            Thread.sleep(4000);
+            System.out.println("Je");
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @PostMapping("/register")

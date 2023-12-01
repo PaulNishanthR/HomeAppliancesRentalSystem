@@ -22,19 +22,65 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+//    @Autowired
+//    @Qualifier("delegatedAuthenticationEntryPoint")
+//    AuthenticationEntryPoint authEntryPoint;
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//
+//        return new UserDetailsServiceImpl();
+//    }
+//
+//    @Bean
+//    public BCryptPasswordEncoder passwordEncoder() {
+//
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(userDetailsService());
+//        authProvider.setPasswordEncoder(passwordEncoder());
+//        return new ProviderManager(authProvider);
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity
+//                .authorizeRequests()
+//                .antMatchers("/h2-console/**")
+//                .permitAll()
+//                .antMatchers("/api/auth/**")
+//                .permitAll()
+//                .antMatchers("/swagger-ui/**")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and().httpBasic()
+//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        httpSecurity.csrf().disable();
+//        httpSecurity.cors(Customizer.withDefaults());
+//        httpSecurity.headers().frameOptions().disable();
+//        httpSecurity.exceptionHandling()
+//                .authenticationEntryPoint(authEntryPoint);
+//
+//        return httpSecurity.build();
+//    }
+
     @Autowired
     @Qualifier("delegatedAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public UserDetailsService userDetailsService() {
-
         return new UserDetailsServiceImpl();
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -56,6 +102,8 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/swagger-ui/**")
                 .permitAll()
+                .antMatchers("/api/admin/product/downloadFile/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().httpBasic()
@@ -69,4 +117,5 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 }
